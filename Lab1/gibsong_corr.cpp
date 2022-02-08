@@ -7,8 +7,10 @@ arrStats::corrs::corrs() {
 }
 float arrStats::corrs::corr_coef(std::vector<float>* data1, std::vector<float>* data2) {
     int limit_size = data1->size();
-    if(data1->size() >= data2->size()) {
-         limit_size = data2->size();
+    if(data1->size() != data2->size()) {
+        printf("data arrays not same size\n");
+        return -1;
+         //limit_size = data2->size();
     }
     arrStats::basicStats stat_obj(1);
     float mean1 = stat_obj.mean(data1);
@@ -18,17 +20,23 @@ float arrStats::corrs::corr_coef(std::vector<float>* data1, std::vector<float>* 
     float sumxy = 0;
     float sumx_sq = 0;
     float sumy_sq = 0;
-    std::vector<float> comb_vec(*data1);
-    comb_vec.insert(data1->end(), data2->begin(), data2->end());
+    std::vector<float> comb_vec;
+    //combine vectors to determine the combined mean
+    comb_vec.insert(comb_vec.end(), data1->begin(), data1->end());
+    comb_vec.insert(comb_vec.end(), data2->begin(), data2->end());
     float comb_mean = stat_obj.mean(&comb_vec);
+    comb_mean = mean1*mean2;
+    //printf("combined mean  = %f and N = %i\n", comb_mean, data1->size());
     //float comb_mean = (data1->size()*mean1 + data2->size()*mean2)/(data1->size()+data2->size());
-    //comb_mean = comb_mean * limit_size;
-    for(int i = 0; i < limit_size; i++) {
+    comb_mean = comb_mean * data1->size();
+    for(int i = 0; i < data1->size(); i++) {
         sumxy = (data1->at(i) * data2->at(i)) + sumxy;
         sumx_sq = sumx_sq + pow(data1->at(i), 2);
         sumy_sq = sumy_sq + pow(data2->at(i), 2);
 
     }
+     //printf("sumxy  = %f and sumx_sq = %f and sumy_sq = %f\n", sumxy, sumx_sq, sumy_sq);
+     //printf("top = %f bottom = %f\n", sumxy-comb_mean, sqrt((sumx_sq-mean1_sq)*(sumy_sq-mean2_sq)));
     float cor_co = (sumxy - comb_mean)/sqrt((sumx_sq-mean1_sq)*(sumy_sq-mean2_sq));
     return cor_co;
 }
