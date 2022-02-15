@@ -58,7 +58,8 @@ int main() {
     }
     //printf("max number of values in a bin = %i\n", max_num);
     //go from largest value to smallest to construct histogram
-    
+    ///*
+    int counter = 1;
     for(int z = max_num; z > 0; z--) {
         for(int y = 0; y < vec_ptr.size(); y++) { //go through each bin
             if( vec_ptr[y] >= z) {
@@ -80,14 +81,19 @@ int main() {
         printf("%i ", vec_ptr[j]);
     }
     printf("\n");
-    
-    /*
+    //*/
+   /*
+    int counter = 1;
     for(int z = 0; z < max_num; z++) {
         for(int y = 0; y < vec_ptr.size(); y++) { //go through each bin
            
             printf("%d *", vec_ptr[y]);
             for(int x = 0; x <vec_ptr[y]; x++) {
-                printf("=");
+                if(counter == 10) {
+                    printf("=");
+                    counter = 1;
+                }
+                counter++;
             }
             printf("\n");
         }

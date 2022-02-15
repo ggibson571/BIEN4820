@@ -12,7 +12,7 @@ if test $conc_level = "00"
 then
 #echo "entered"
 #touch catted_data_test.dat #create file to concatenate all 60 data files to
-cat ./ERP/ERP00/* > catted_data.dat #concatenate all files in a directory and output to new file
+cat ./ERP/ERP00/* > catted_data${conc_level}.dat #concatenate all files in a directory and output to new file
 fi
 if test $conc_level = "05"
 then
@@ -23,9 +23,9 @@ fi
 #cp /home/gibsong/BIEN4820/Lab1/gibsong_stats.hpp gibsong_stats.hpp
 
 make clean
-make hist
+make hist #compile and link all executable files
 
 touch hist$conc_level.txt
-echo "catted_data.dat" | ./hist  > hist$conc_level.txt
+echo "catted_data.dat" | ./hist  > hist$conc_level.txt #echo output of executable to output file
 #print to screen where output is stored 
 echo "output stored in hist$conc_level.txt"
