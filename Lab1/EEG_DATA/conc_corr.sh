@@ -21,12 +21,15 @@ counter=1
 while [ $counter -le 59 ]
 do 
     #echo -e "hi\n"
+    counter_plus=$((counter + 1))
     if [ $conc_level = "00" ]
     then
-        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}${counter+1}.txt\n"
-        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}${counter+1}.txt\n" | ./corr >> conc_corr_$conc_level.csv
+        
+        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}${counter_plus}.txt\n"
+        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}${counter_plus}.txt\n" | ./corr >> conc_corr_$conc_level.csv
     else 
-        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}.${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}.${counter+1}.txt\n" | ./corr >> conc_corr_$conc_level.csv
+        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}${counter_plus}.txt\n"
+        echo -e "./ERP/ERP${conc_level}/ERP${conc_level}.${counter}.txt\n./ERP/ERP${conc_level}/ERP${conc_level}.${counter_plus}.txt\n" | ./corr >> conc_corr_$conc_level.csv
     fi
     (( counter++ ))
 done
