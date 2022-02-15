@@ -21,6 +21,7 @@ namespace arrStats {
 
 	class basicStats {
 		public:
+			//constructor for creating an object for this class, test is a throw away variable just to test out passing numbers to a constructor
 			basicStats(int test);
 			//mini() calculates and returns the minimum value of an input array
 			float mini(std::vector<float>* in_arr); //or use std::vector<float>

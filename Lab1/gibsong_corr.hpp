@@ -19,8 +19,9 @@ namespace arrStats {
 
 	class corrs {
 		public:
+			//constructor to construct an object for the corrs class
 			corrs();
-            //estimates the correlation coefficient between 2 data sets
+            //estimates and returns the correlation coefficient between 2 data sets (vectors)
 			float corr_coef(std::vector<float>* data1, std::vector<float>* data2);
 
 

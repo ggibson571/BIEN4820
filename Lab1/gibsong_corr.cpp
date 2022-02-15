@@ -1,5 +1,5 @@
 #include "gibsong_corr.hpp"
-#include "gibsong_stats.cpp"
+#include "gibsong_stats.hpp"
 using namespace arrStats;
 
 arrStats::corrs::corrs() {

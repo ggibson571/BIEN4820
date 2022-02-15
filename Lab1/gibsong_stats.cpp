@@ -58,7 +58,7 @@ std::vector<int> arrStats::basicStats::hist(std::vector<float>* in_arr) {
     float bin_begin = mean - 3*std;
     float bin_end = mean + 3*std;
     int num_bins = (bin_end - bin_begin)/width;
-    printf("number of bins = %i\n", num_bins);
+    //printf("number of bins = %i\n", num_bins);
     std::vector<int> bin_sizes (num_bins);
     int j = 0; //calculate range & count through bin sizes
     int sum = 0; //count number of values in a bin
