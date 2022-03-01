@@ -23,9 +23,9 @@ namespace home_of_vecs{
             //constructor to create pre_processing object to use functions below
             pre_processing();
             //normalize the in_arr by dividing the data (element by element) by the mean intensity value
-            void normalize(std::vector<float> *in_arr, std::vector<float> *out_arr);
+            std::vector<float> normalize(std::vector<float> *in_arr);
             //takes normalized data of both sporulating (sp_arr) and non-sorulating (non_sp_arr) samples and calculates the log ratio for each gene
-            void log_ratio(std::vector<float> *sp_arr, std::vector<float> *non_sp_arr, std::vector<float> *out_arr);
+            std::vector<float> log_ratio(std::vector<float> *sp_arr, std::vector<float> *non_sp_arr);
     };
 }
 #endif
