@@ -72,7 +72,26 @@ int main(void) {
     }
     fileStream.close();
     int size_file = i; //holds number of data points in file
+    //open file with gene names
+    std::ifstream fileStream2;
+    fileStream2.open("gene_list.txt"); //open file
 
+	//check if the data file exists before trying to read it 
+    if(!fileStream2.is_open()) { //fopen returns a null pointer if FILE object is not opened successfully/not found
+        std::cout << "Data file is not found\n";
+        fileStream2.close();
+        return -1;
+    }
+    //ensure all data pts are correctly read
+    i=0;
+    std::vector<float> in_arr2;
+    if(fileStream2.is_open()) {
+        while( std::getline(fileStream, dataEntry) ){
+            in_arr2.push_back(dataEntry);
+			i++;
+        }
+    }
+    fileStream2.close();
     //initialize three cluster classes, their names, and means 
     gene_clustering::Cluster cluster1("suppressed", -0.5);
     gene_clustering::Cluster cluster2("stationary", 0);
@@ -83,6 +102,7 @@ int main(void) {
     float mean1, mean2, mean3; //will store the old cluster means 
     float sum_diff; //hold the sum of the abs difference of old and new means
     int flag = 1; //flag if should continue the while loop
+    std::vector<std::string> names1, names2, names3; //will hold names of genes in each cluster
     while(flag) {
         for(i=0; i<size_file;i++) {
             distance1 = cluster1.distance(in_arr[i]);
@@ -92,13 +112,16 @@ int main(void) {
             //assume if any distance is equal to distance 1, cluster 1 gets the data point 
             if((distance1<=distance2) && (distance1<=distance3)) {
                 cluster_data1.push_back(in_arr[i]); //add new element to end of vector
+                names1.push_back(in_arr2[i]);
             } 
             //assume if distance2 is equal to distance3, cluster 2 gets data point
             else if((distance2<distance1) && (distance2<=distance3)) {
                 cluster_data2.push_back(in_arr[i]);
+                names2.push_back(in_arr2[i]);
             }
             else { //distance3 is the closest/smallest
                 cluster_data3.push_back(in_arr[i]); //add to closest cluster
+                names3.push_back(in_arr2[i]);
             }
 
         }
@@ -117,12 +140,52 @@ int main(void) {
             flag = 0; //break out while loop
             break; //leave the for loop
         }
+        //clear members of each cluster if did not meet criteria 
+        cluster_data1.clear();
+        cluster_data2.clear();
+        cluster_data3.clear();
+        names1.clear();
+        names2.clear();
+        names3.clear();
     }
     //output the final cluster means to standard output
     std::cout<<"cluster mean 1= "<<cluster1.getMean()<<"\n";
     std::cout<<"cluster mean 2= "<<cluster2.getMean()<<"\n";
     std::cout<<"cluster mean 3= "<<cluster3.getMean()<<"\n";
     //write three output files with the list of genes by name
+
+    
+    /*std::vector<std::string> names1, names2, names3; //will hold names of genes in each cluster
+    for(i=0; i<in_arr2.size();i++) {
+        for(int j=0; )
+        if(in_arr[i] == )
+    }*/
+    std::ofstream out_file1, out_file2, out_file3;
+    out_file1.open("expressed_genes.txt");
+    if(out_file1.is_open()) {
+        for(int j = 0; j < names1.size(); j++) {
+            out_file1 << names1[j] <<"\n";
+            //std::cout << j;
+        }
+    }
+    out_file2.open("suppressed_gene.txt");
+    if(out_file2.is_open()) {
+        for(int j = 0; j < names2.size(); j++) {
+            out_file2 << names2[j] <<"\n";
+            //std::cout << j;
+        }
+    }
+    out_file3.open("stationary_gene.txt");
+    if(out_file3.is_open()) {
+        for(int j = 0; j < names3.size(); j++) {
+            out_file3 << names3[j] <<"\n";
+            //std::cout << j;
+        }
+    }
+    out_file1.close();
+    out_file2.close();
+    out_file3.close();
+     //holds number of data points in file
 
     return 0; //if successful execution (ie went thru entire main program )
 }
