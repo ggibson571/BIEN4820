@@ -3,7 +3,7 @@
 #include "gibsong_vector_ops.hpp"
 //constructor to create pre_processing object to use functions below
 home_of_vecs::pre_processing::pre_processing(){
-    std::cout<<"created a lil obj\n";
+    //std::cout<<"created a lil obj\n";
 }
 //normalize the in_arr by dividing the data (element by element) by the mean intensity value
 std::vector<float> home_of_vecs::pre_processing::normalize(std::vector<float> *in_arr){
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     char* file_path_bkg_green = argv[4];
     char* cali_data = argv[5];
     int num_genes = atoi(argv[6]);
-    printf("%s %s %s %s %s %i\n", file_path_red, file_path_bkg_red, file_path_green, file_path_bkg_green, cali_data, num_genes);
+    //printf("%s %s %s %s %s %i\n", file_path_red, file_path_bkg_red, file_path_green, file_path_bkg_green, cali_data, num_genes);
     std::ifstream fileStream_red;
     fileStream_red.open(file_path_red); //open file
     std::string dataEntry;
@@ -149,8 +149,9 @@ int main(int argc, char *argv[]) {
     
     std::ofstream out_file;
     out_file.open(cali_data);
+    //only write the output of the number of genes specified to be analyzed 
     if(out_file.is_open()) {
-        for(int j = 0; j < output.size(); j++) {
+        for(int j = 0; j < num_genes; j++) {
             out_file << output[j] <<"\n";
             //std::cout << j;
         }
