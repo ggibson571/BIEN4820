@@ -1,11 +1,11 @@
 #include "gibsong_k_means.hpp"
-#include "/home/gibsong/BIEN4820/Lab1/gibsong_stats.hpp"
+#include "gibsong_stats.hpp"
 
-//constructor to make cluster object with sets the data vector, name of cluster, and mean of data
+//constructor to make cluster object which sets the =name of cluster and mean of data
 gene_clustering::Cluster::Cluster(std::string name, float mean) {
     this->cluster_name = name;
     this->cluster_mean = mean;
-    //std::cout<<"mean= "<<this->cluster_mean<<" name= "<<this->cluster_name<<"\n";
+    
 }
 //getMean returns the mean of the cluster data
 float gene_clustering::Cluster::getMean(){
@@ -47,6 +47,7 @@ void gene_clustering::Cluster::setData(std::vector<float>* new_cluster) {
 int main(void) {
     //read in a data file named log_ratio_input.dat
     std::string file_path;
+    //used for testing 
     //std::cout << "What is the file path to your data file?\n"; //prompt user for file
     //std::cin >> file_path; //take file name in
     
@@ -108,12 +109,13 @@ int main(void) {
     std::vector<std::string> names1, names2, names3; //will hold names of genes in each cluster
     while(flag) {
         for(i=0; i<size_file;i++) {
+            //calculate distance of cluster mean from each data point
             distance1 = cluster1.distance(in_arr[i]);
             distance2 = cluster2.distance(in_arr[i]);
             distance3 = cluster3.distance(in_arr[i]);
-            //std::cout<<"distances= " <<distance1<< ", "<<distance2<<", "<<distance3<<"\n";
+            
 
-            //reassign the data point to the closest clsuter
+            //reassign the data point to the closest cluster
             //assume if any distance is equal to distance 1, cluster 1 gets the data point 
             if((distance1<=distance2) && (distance1<=distance3)) {
                 cluster_data1.push_back(in_arr[i]); //add new element to end of vector
@@ -130,30 +132,29 @@ int main(void) {
             }
 
         }
-        //std::cout<<"went through one cluster \n";
+        
         //finished entire data file
         //store old means of clusters
-        //std::cout<<"about to get mean\n";
         mean1 = cluster1.getMean();
         mean2 = cluster2.getMean();
         mean3 = cluster3.getMean();
-        //std::cout<<"got the old mean\n";
+        
         //recalculate the cluster mean
         cluster1.calcMean(&cluster_data1);
         cluster2.calcMean(&cluster_data2);
         cluster3.calcMean(&cluster_data3);
-        //std::cout<<"got the new mean\n";
+        
         //calculate the sum of the fabs difference of previous and current mean 
         sum_diff = cluster1.distance(mean1)+cluster2.distance(mean2)+cluster3.distance(mean3);
-        //std::cout<<sum_diff<<"\n";
         
-        if(sum_diff <= 0.0001) {
+        
+        if(sum_diff <= 0.0001) { //criteria for stopping k means algorithm 
             flag = 0; //break out while loop
             //std::cout<<"about to break the loop\n";
             break; //leave the for loop
         }
 
-        //clear members of each cluster if did not meet criteria 
+        //clear members of each cluster if did not meet criteria... will reassign clusters again 
         cluster_data1.clear();
         cluster_data2.clear();
         cluster_data3.clear();
@@ -167,18 +168,13 @@ int main(void) {
     std::cout<<cluster3.getMean()<<"\n";
     //write three output files with the list of genes by name
 
-    
-    /*std::vector<std::string> names1, names2, names3; //will hold names of genes in each cluster
-    for(i=0; i<in_arr2.size();i++) {
-        for(int j=0; )
-        if(in_arr[i] == )
-    }*/
     std::ofstream out_file1, out_file2, out_file3;
     
     out_file1.open("suppressed_gene.txt");
     if(out_file1.is_open()) {
         for(int j = 0; j < names1.size(); j++) {
             out_file1 << names1[j] <<"\n";
+
             //std::cout << j;
         }
     }
@@ -196,7 +192,11 @@ int main(void) {
             //std::cout << j;
         }
     }
-    /*
+    //close all files once done writing to them
+    out_file1.close();
+    out_file2.close();
+    out_file3.close();
+    /* //test code to determine the log values in each cluster and names in each cluster based upon the mean of the clusters 
     if(cluster1.getMean()>cluster2.getMean()>cluster3.getMean()) {
         out_file1.open("expressed_gene.txt");
         if(out_file1.is_open()) {
@@ -336,10 +336,8 @@ int main(void) {
         }
     }
     */
-    out_file1.close();
-    out_file2.close();
-    out_file3.close();
-     //holds number of data points in file
+    
+     
 
     return 0; //if successful execution (ie went thru entire main program )
 }
